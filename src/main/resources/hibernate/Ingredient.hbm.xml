@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.meijer.foodlab.model.domain.Ingredient" table="fl_ingredient">
+        <id name="ingredientId" type="java.lang.Integer">
+            <column name="ingredient_id" />
+            <generator class="native" />
+        </id>
+   		<many-to-one name="ingredientItem" class="com.meijer.foodlab.model.domain.IngredientItem" fetch="join" lazy="false">
+            <column name="ingredient_item_id" not-null="true" />
+        </many-to-one>
+        <property name="description" type="java.lang.String">
+            <column name="description" length="255" not-null="true" />
+        </property>
+        <property name="category" type="java.lang.String">
+            <column name="category" length="36"/>
+        </property>
+        <property name="readableDescription" type="java.lang.String">
+            <column name="readable_desc" length="255"/>
+        </property>
+        <property name="basicItem" type="java.lang.String">
+            <column name="basic_item" length="255"/>
+        </property>
+        <property name="createdBy" type="java.lang.String">
+            <column name="created_by" />
+        </property>
+        <property name="lastUpdatedBy" type="java.lang.String">
+            <column name="last_updated_by" />
+        </property>
+        <property name="lastUpdate" type="java.util.Date" update="false" insert="false">
+            <column name="last_update" length="19" not-null="true" />
+        </property>
+        <property name="created" type="java.util.Date" update="false">
+            <column name="created" length="19" not-null="true" />
+        </property>
+         <set name="recipeIngredients"
+        		fetch="join"
+        		sort="com.meijer.foodlab.model.domain.RecipeIngredientComparator"	
+        		inverse="true"
+        		cascade="save-update" lazy="true">
+            <key>
+                <column name="ingredient_id" not-null="true"/>
+            </key>
+            <one-to-many class="com.meijer.foodlab.model.domain.RecipeIngredient" />
+        </set>
+    </class>
+    
+    <query name="findIngredientNames">
+    	select readableDescription from Ingredient where description like :query
+    </query>
+</hibernate-mapping>

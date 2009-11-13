@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.meijer.foodlab.model.domain.OneStopPromotionMembership"
+        table="fl_onestop_promotion_membership">
+		<composite-id>
+			<key-many-to-one name="promotion" class="com.meijer.foodlab.model.domain.Promotion" column="promotion_id"/>
+		    <key-many-to-one name="oneStop" class="com.meijer.foodlab.model.domain.OneStop" column="onestop_id"/>
+		</composite-id>
+		
+    </class>
+</hibernate-mapping>

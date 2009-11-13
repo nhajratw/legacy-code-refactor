@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.meijer.foodlab.model.domain.UPCItems" table="fl_upc_items">
+        <id name="code" type="java.lang.Long">
+            <column name="upc_code" />
+            <generator class="assigned" />
+        </id>
+        <property name="description" type="java.lang.String">
+            <column name="upc_desc" length="255" />
+        </property>
+        <property name="primaryCategory" type="java.lang.String">
+            <column name="primary_category" length="255" />
+        </property>        
+        <property name="mprsCategory" type="java.lang.String">
+            <column name="mprs_category" length="255" />
+        </property>  
+        <property name="productCategory" type="java.lang.String">
+            <column name="product_category" length="255" />
+        </property> 
+        <property name="categoryId" type="java.lang.Integer">
+            <column name="upc_cat_id" length="6"  />
+        </property>
+        <property name="storeAisle" type="java.lang.String">
+            <column name="store_aisle" length="155" />
+        </property>
+    </class>
+</hibernate-mapping>

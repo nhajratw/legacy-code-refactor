@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.meijer.foodlab.model.domain.IngredientItem" table="fl_ingredient_item">
+        <id name="ingredientItemId" type="java.lang.Integer">
+            <column name="ingredient_item_id" />
+            <generator class="native" />
+        </id>
+        <property name="name" type="java.lang.String">
+            <column name="name" length="128" not-null="true" />
+        </property>
+        <set name="upcIngredients"
+        		fetch="select"
+        		inverse="true"
+        		cascade="save-update" lazy="false">
+            <key>
+                <column name="ingredient_item_id" not-null="true"/>
+            </key>
+            <one-to-many class="com.meijer.foodlab.model.domain.UpcIngredient" />
+        </set>
+        <set name="ingredients"
+        		fetch="select"
+        		inverse="true"
+        		cascade="save-update" lazy="true">
+            <key>
+                <column name="ingredient_item_id" not-null="true"/>
+            </key>
+            <one-to-many class="com.meijer.foodlab.model.domain.Ingredient" />
+        </set>
+        <set name="ingredientItemPromotions"
+        		fetch="select"
+        		inverse="true"
+        		cascade="all-delete-orphan" lazy="false">
+            <key>
+                <column name="ingredient_item_id" not-null="true"/>
+            </key>
+            <one-to-many class="com.meijer.foodlab.model.domain.IngredientItemPromotion" />
+        </set>
+        <map name="sizeConversionMap"
+        		fetch="join"
+        		cascade="none" 
+        		lazy="false"
+        		table="fl_ingredient_item_size">
+            <key column="ingredient_item_id" not-null="true"/>
+            
+            <map-key
+                formula="(select c.type from fl_ingredient_item_size_conversion c where
+                c.ingredient_item_size_conversion_id = ingredient_item_size_conversion_id)" 
+                type="com.meijer.foodlab.persistence.hibernate.usertype.IngredientItemSizeConversionTypeUserType"/>
+                
+             <many-to-many 
+            	column="ingredient_item_size_conversion_id"
+            	unique="true"
+            	class="com.meijer.foodlab.model.domain.IngredientItemSizeConversion"/> 
+           
+           <!--  <one-to-many class="com.meijer.foodlab.model.domain.IngredientItemSizeConversion" /> --> 
+             
+        </map>
+
+
+    </class>
+</hibernate-mapping>

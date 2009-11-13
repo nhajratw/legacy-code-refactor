@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.meijer.foodlab.model.domain.PromotionCategory" table="fl_promotion_category">
+        <id name="promotionCategoryId" type="java.lang.Integer">
+            <column name="promotion_category_id" />
+            <generator class="native" />
+        </id>
+
+        <property name="name" type="java.lang.String">
+        	<column name="name" not-null="true"/>
+        </property>
+        <property name="refName" type="java.lang.String">
+        	<column name="ref_name" not-null="true"/>
+        </property>
+        <property name="active" type="java.lang.Boolean">
+        	<column name="active" not-null="true"/>
+        </property>
+        <property name="sortIdx" type="java.lang.Integer">
+        	<column name="sort_idx" not-null="true"/>
+        </property>
+        <property name="image" type="java.lang.String">
+            <column name="image" />
+        </property>
+        <property name="lastUpdate" type="java.util.Date" update="false" insert="false">
+            <column name="last_update" length="19" not-null="true" />
+        </property>
+        <property name="created" type="java.util.Date" update="false">
+            <column name="created" length="19" not-null="true" />
+        </property>
+        <many-to-one name="chain" class="com.meijer.foodlab.model.domain.Chain" fetch="select" lazy="false">
+    		<column name="chain_id" length="11" />
+    	</many-to-one>    	
+        
+        
+        <set name="promotions" table="fl_promotion_category_membership" cascade="none">
+        	<key column="promotion_category_id"/>
+        	<many-to-many column="promotion_id"
+            	unique="true"
+            	class="com.meijer.foodlab.model.domain.Promotion"/>
+    	</set>
+        
+        
+        <!-- <set name="promotions" inverse="true" cascade="all-delete-orphan">
+            <key>
+                <column name="promotion_id" not-null="true" />
+            </key>
+            <one-to-many class="com.meijer.foodlab.model.domain.IngredientItemPromotion" />
+        </set>-->
+    </class>
+</hibernate-mapping>

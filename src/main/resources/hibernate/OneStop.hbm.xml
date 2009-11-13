@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.meijer.foodlab.model.domain.OneStop" table="fl_onestop">
+        <id name="id" type="java.lang.Integer">
+            <column name="onestop_id" />
+            <generator class="native" />
+        </id>
+
+        <property name="latestImage" type="java.lang.String">
+        	<column name="image" not-null="true"/>
+        </property>
+        
+        <property name="status" type="com.meijer.foodlab.persistence.hibernate.usertype.OneStopStatusUserType">
+            <column name="status" not-null="true" />
+        </property>
+        <property name="ignored" type="java.lang.Boolean">
+            <column name="ignored" />
+        </property>
+        <property name="lastUpdate" type="java.util.Date" update="false" insert="false">
+            <column name="last_update" length="19" not-null="false" />
+        </property>
+        <property name="created" type="java.util.Date" update="false">
+            <column name="created" length="19" not-null="true" />
+        </property>
+
+		<set name="details" table="fl_onestop_detail" cascade="all">
+		    <key column="onestop_id"/>
+            <one-to-many class="com.meijer.foodlab.model.domain.OneStopDetail" />
+		</set>
+        
+		<set name="upcCodes" table="fl_onestop_upc" cascade="all" lazy="false">
+		    <key column="onestop_id"/>
+            <one-to-many class="com.meijer.foodlab.model.domain.OneStopUpc" />
+		</set>
+        
+        <set name="promotions" table="fl_onestop_promotion_membership" cascade="save-update" lazy="false">
+        	<key column="onestop_id"/>
+        	<many-to-many column="promotion_id"
+            	unique="true"
+            	class="com.meijer.foodlab.model.domain.Promotion"/>
+    	</set>  
+ 
+         <set name="ingredientItems" table="fl_onestop_ingredient_membership" cascade="save-update" lazy="false">
+        	<key column="onestop_id"/>
+        	<many-to-many column="ingredient_item_id"
+            	unique="true"
+            	class="com.meijer.foodlab.model.domain.IngredientItem"/>
+    	</set>       
+
+    </class>
+    <query name="findByPromotionId">
+        select onestop FROM OneStop onestop inner join onestop.promotions promotion where promotion.promotionId = :pPromotionId
+    </query>
+</hibernate-mapping>

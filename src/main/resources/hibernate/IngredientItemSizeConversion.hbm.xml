@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.meijer.foodlab.model.domain.IngredientItemSizeConversion" table="fl_ingredient_item_size_conversion">
+        <id name="ingredientItemSizeConversionId" type="java.lang.Integer">
+            <column name="ingredient_item_size_conversion_id" />
+            <generator class="native" />
+        </id>
+
+        <property name="type" type="com.meijer.foodlab.persistence.hibernate.usertype.IngredientItemSizeConversionTypeUserType">
+            <column name="type" length="24" not-null="true" />
+        </property>
+        <property name="food" type="java.lang.String">
+            <column name="food" length="255" not-null="false" />
+        </property>
+        <property name="weight" type="java.lang.String">
+            <column name="weight" length="255" not-null="false" />
+        </property>
+        <property name="approximateMeasure" type="java.lang.String">
+            <column name="approx_measure" length="255" not-null="false" />
+        </property>
+        <property name="fromUnitStr" type="java.lang.String">
+            <column name="from_unit" length="32" not-null="true" />
+        </property>
+        <property name="fromQuantity" type="java.lang.Double">
+            <column name="from_qty" not-null="true" />
+        </property>        
+        <property name="toUnitStr" type="java.lang.String">
+            <column name="to_unit" length="32" not-null="true" />
+        </property>
+        <property name="toQuantity" type="java.lang.Double">
+            <column name="to_qty" not-null="true" />
+        </property>
+        <property name="lastUpdate" type="java.util.Date" update="false" insert="false">
+            <column name="last_update" length="19" not-null="false" />
+        </property>
+        <property name="created" type="java.util.Date" update="false">
+            <column name="created" length="19" not-null="true" />
+        </property>     
+        
+        <set name="ingredientItems" table="fl_ingredient_item_size" cascade="all" lazy="false">
+        	<key column="ingredient_item_size_conversion_id"/>
+        	<many-to-many column="ingredient_item_id"
+            	unique="true"
+            	class="com.meijer.foodlab.model.domain.IngredientItem"/>
+    	</set> 
+        
+                          
+    </class>
+</hibernate-mapping>

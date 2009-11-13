@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.meijer.foodlab.model.domain.Chain" table="fl_chain">
+		<id name="id" type="java.lang.Integer">
+			<column name="chain_id" />
+			<generator class="native" />
+		</id>
+		
+		<property name="name" type="java.lang.String" not-null="true">
+			<column name="name" not-null="true"/>
+		</property>
+		<property name="image" type="java.lang.String">
+			<column name="image"/>
+		</property>
+		<property name="baseUrl" type="java.lang.String" length="255">
+			<column name="base_url"/>
+		</property>
+		<property name="campaignId" type="java.lang.String" length="64">
+			<column name="campaign_id"/>
+		</property>		
+		<property name="status" type="com.meijer.foodlab.persistence.hibernate.usertype.ChainStatusUserType">
+            <column name="status" not-null="true" />
+        </property>
+        <property name="lastUpdate" type="java.util.Date" update="false" insert="false">
+            <column name="last_update" length="19" not-null="true" />
+        </property>
+        <property name="created" type="java.util.Date" update="false">
+            <column name="created" length="19" not-null="true" />
+        </property>
+        <many-to-one name="processor" class="com.meijer.foodlab.model.domain.ChainProcessor" lazy="false">
+            <column name="processor_id"/>
+        </many-to-one>
+	</class>
+</hibernate-mapping>

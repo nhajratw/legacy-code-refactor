@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.meijer.foodlab.model.domain.UpcIngredient" table="fl_upc_ingredient">
+        <id name="upcIngredientId" type="java.lang.Integer">
+            <column name="upc_ingredient_id" />
+            <generator class="native" />
+        </id>
+        <many-to-one name="upc" class="com.meijer.foodlab.model.domain.UPCItems" fetch="join" lazy="false">
+            <column name="upc_code" not-null="true" />
+        </many-to-one>
+		<many-to-one name="ingredientItem" class="com.meijer.foodlab.model.domain.IngredientItem" fetch="join">
+            <column name="ingredient_item_id" not-null="true" />
+        </many-to-one>
+        <property name="lastUpdate" type="java.util.Date" update="false" insert="false">
+            <column name="last_update" length="19" not-null="true" />
+        </property>
+        <property name="created" type="java.util.Date" update="false">
+            <column name="created" length="19" not-null="true" />
+        </property>
+    </class>
+    <query name="findIngredientItemByUpcCode">
+        select upcIng.ingredientItem from UpcIngredient upcIng where upcIng.upc.code in (:pCode)
+    </query>
+</hibernate-mapping>
