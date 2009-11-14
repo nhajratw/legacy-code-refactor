@@ -269,6 +269,23 @@ public class PromotionToOneStopMapper {
 		return lNewOneStop;
 	}
 
+	protected boolean updatePromotionWithOneStopIfNeeded(Promotion pPromotion, OneStop pOneStop){
+		//see if its there
+		OneStopPromotionMembership lOneStopMembership = m_oneStopPromotionMembershipDao.findById(pPromotion.getPromotionId(), pOneStop.getId());
+		if(null==lOneStopMembership){
+			//then save it
+			lOneStopMembership = new OneStopPromotionMembership();
+			lOneStopMembership.setOneStop(pOneStop);
+			lOneStopMembership.setPromotion(pPromotion);
+			m_oneStopPromotionMembershipDao.save(lOneStopMembership);
+
+			//update set entities
+			pOneStop.getPromotions().add(pPromotion);
+		}
+
+		return true;
+	}
+
 	protected boolean updatePromotionWithOneStop(Promotion pPromotion, OneStop pOneStop){
 		if(null==pPromotion || null==pOneStop){
 			return false;
